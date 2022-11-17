@@ -8,7 +8,7 @@ from dataset import (
     ami_dataset,
     icsi_dataset,
 )
-from types import (
+from typess import (
     TopicSegmentationAlgorithm,
     TopicSegmentationDatasets,
     TopicSegmentationConfig,
@@ -36,10 +36,12 @@ def compute_metrics(prediction_segmentations, binary_labels, metric_name_suffix=
         # setting k to default value used in CoAP (pk) function for both evaluation functions
         k = int(
             round(
-                len(reference_segmentation) / (reference_segmentation.count("1") * 2.0)
+                len(reference_segmentation) /
+                (reference_segmentation.count("1") * 2.0)
             )
         )
-        _windiff.append(windowdiff(reference_segmentation, predicted_segmentation, k))
+        _windiff.append(windowdiff(reference_segmentation,
+                        predicted_segmentation, k))
 
     avg_pk = sum(_pk) / len(binary_labels)
     avg_windiff = sum(_windiff) / len(binary_labels)
@@ -79,11 +81,13 @@ def binary_labels_flattened(
         meeting_data = input_df[
             input_df[meeting_id_col_name] == meeting_id
         ].sort_values(by=[start_col_name])
-        meeting_sentences = [*map(lambda s: s.lower(), list(meeting_data["caption"]))]
+        meeting_sentences = [
+            *map(lambda s: s.lower(), list(meeting_data["caption"]))]
 
         caption_start_times = list(meeting_data[start_col_name])
         segment_start_times = list(
-            labels_df[labels_df[meeting_id_col_name] == meeting_id][start_col_name]
+            labels_df[labels_df[meeting_id_col_name]
+                      == meeting_id][start_col_name]
         )
 
         meeting_labels_flattened = [0] * len(caption_start_times)
@@ -135,14 +139,17 @@ def binary_labels_top_level(
         meeting_data = input_df[
             input_df[meeting_id_col_name] == meeting_id
         ].sort_values(by=[start_col_name])
-        meeting_sentences = [*map(lambda s: s.lower(), list(meeting_data["caption"]))]
+        meeting_sentences = [
+            *map(lambda s: s.lower(), list(meeting_data["caption"]))]
 
         caption_start_times = list(meeting_data[start_col_name])
         segment_start_times = list(
-            labels_df[labels_df[meeting_id_col_name] == meeting_id][start_col_name]
+            labels_df[labels_df[meeting_id_col_name]
+                      == meeting_id][start_col_name]
         )
         segment_end_times = list(
-            labels_df[labels_df[meeting_id_col_name] == meeting_id][end_col_name]
+            labels_df[labels_df[meeting_id_col_name]
+                      == meeting_id][end_col_name]
         )
 
         meeting_labels_top_level = [0] * len(caption_start_times)
@@ -156,7 +163,7 @@ def binary_labels_top_level(
                 # skip all the subtopics of this high level topic
                 i = (
                     segment_end_times.index(end)
-                    + segment_end_times[segment_end_times.index(end) + 1 :].index(end)
+                    + segment_end_times[segment_end_times.index(end) + 1:].index(end)
                     + 2
                 )
             else:

@@ -9,7 +9,7 @@ from transformers import RobertaConfig, RobertaModel
 configuration = RobertaConfig()
 roberta_model = RobertaModel(configuration)
 
-from types import (
+from typess import (
     TopicSegmentationAlgorithm,
     TopicSegmentationConfig,
     TextTilingHyperparameters,
